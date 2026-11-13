@@ -1,0 +1,6 @@
+{
+  "name": "Kestrel VPN",
+  "description": "Application mobile VPN universelle (PWA & projet Android APK) avec génération de clés WireGuard Curve25519, profils multi-protocoles, diagnostics réseau et DNS chiffré.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
