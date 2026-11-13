@@ -1,0 +1,41 @@
+name: Build Universal Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+          
+      - name: Créer le dossier et Extraire le ZIP
+        run: |
+          mkdir -p android_build
+          unzip -o kestrel-vpn-android-apk-universel.zip -d android_build
+          
+      - name: Build Universal APK
+        working-directory: ./android_build/kestrel-vpn-android-apk-universel
+        run: gradle assembleDebug
+        
+      - name: Upload Universal APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: kestrel-vpn-universal-apk
+          path: android_build/**/build/outputs/apk/debug/*.apk
