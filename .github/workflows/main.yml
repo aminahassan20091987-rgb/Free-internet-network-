@@ -30,9 +30,13 @@ jobs:
           mkdir -p android_build
           unzip -o kestrel-vpn-android-apk-universel.zip -d android_build
           
+      # Cette étape trouve automatiquement le vrai dossier et compile dedans
       - name: Build Universal APK
-        working-directory: ./android_build/kestrel-vpn-android-apk-universel
-        run: gradle assembleDebug
+        run: |
+          PROJECT_DIR=$(find android_build -name "build.gradle.kts" -maxdepth 3 | head -n 1 | xargs dirname)
+          echo "Compilation dans le dossier : $PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          gradle assembleDebug
         
       - name: Upload Universal APK
         uses: actions/upload-artifact@v4
